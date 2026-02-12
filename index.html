@@ -243,17 +243,66 @@ font-size:32px;
 </div>
 </section>
 
+footer>
+
+</body>
+</html>
 <section id="contact" class="contact">
-<h2 class="section-title">კონტაქტი</h2>
-<p>📍 თბილისი, სერგო ზაქარიაძის 15</p>
-<p>📞 +995 593 49 17 02</p>
-<br>
-<form>
-<input type="text" placeholder="თქვენი სახელი" required>
-<input type="tel" placeholder="ტელეფონი" required>
-<textarea rows="4" placeholder="შეტყობინება"></textarea>
-<button type="submit">გაგზავნა</button>
+<h2 class="section-title">ონლაინ ჩაწერა</h2>
+
+<form id="bookingForm">
+  <input type="text" name="firstName" placeholder="სახელი" required>
+  <input type="text" name="lastName" placeholder="გვარი" required>
+  <input type="email" name="email" placeholder="E-mail" required>
+  <input type="tel" name="phone" placeholder="ტელეფონი" required>
+  
+  <select name="therapy" required>
+    <option value="">აირჩიე თერაპია</option>
+    <option value="Behavioral">ქცევითი თერაპია</option>
+    <option value="Sensory">სენსორული თერაპია</option>
+    <option value="Art">არტ თერაპია</option>
+    <option value="Music">მუსიკათერაპია</option>
+    <option value="Physical">ფიზიკური თერაპია</option>
+    <option value="Tomatis">Tomatis მეთოდი</option>
+  </select>
+  
+  <input type="date" name="bookingDate" required>
+  <input type="time" name="bookingTime" required>
+  <textarea name="note" rows="3" placeholder="დამატებითი შენიშვნა"></textarea>
+  
+  <button type="submit">ჩაწერა</button>
 </form>
+<p id="formMessage" style="color:green; text-align:center; margin-top:10px;"></p>
+
+<script>
+const form = document.getElementById("bookingForm");
+const msg = document.getElementById("formMessage");
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = new FormData(form);
+  const params = new URLSearchParams();
+  for (const pair of data) {
+    params.append(pair[0], pair[1]);
+  }
+
+  fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", { // შეცვალე შენი Web App URL
+    method: "POST",
+    body: params
+  })
+  .then(res => res.text())
+  .then(res => {
+    msg.style.color = "green";
+    msg.textContent = "ჩაწერა წარმატებით შესრულდა!";
+    form.reset();
+  })
+  .catch(err => {
+    msg.style.color = "red";
+    msg.textContent = "შეცდომა, სცადეთ თავიდან.";
+  });
+});
+</script>
 </section>
 
 <footer>
